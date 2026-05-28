@@ -1,0 +1,30 @@
+name: Cyber Bot CI - WPF Build
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: windows-latest  # WPF requires Windows
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build the WPF application
+      run: dotnet build --no-restore --configuration Release
+    
+    - name: Run (test execution - verifies build works)
+      run: dotnet run --no-build --configuration Release
