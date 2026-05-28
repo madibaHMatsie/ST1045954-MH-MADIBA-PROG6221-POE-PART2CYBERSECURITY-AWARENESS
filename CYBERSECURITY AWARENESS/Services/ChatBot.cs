@@ -90,6 +90,13 @@ namespace CYBERSECURITY_AWARENESS.Services
 					_memory.SetUserName(userInput);
 					return $"Nice to meet you, {userInput}! I'll remember your name. What cybersecurity topic interests you?";
 				}
+				//  updating interest 
+                 if (userInput.ToLower().Contains("update interest") || userInput.ToLower().Contains("my new interest is"))
+                       {
+                      string newInterest = ExtractInterest(userInput);
+                       _memory.SetUserInterest(newInterest);
+                            return $"Got it! I've updated your interest to {newInterest}. Would you like some tips about that?";
+                          }
 			}
 
 			// Check for "my name is" pattern
@@ -207,19 +214,31 @@ namespace CYBERSECURITY_AWARENESS.Services
 			return input.Trim();
 		}
 
-		private string ExtractInterest(string input)
-		{
-			string lower = input.ToLower();
-			if (lower.Contains("interested in"))
-			{
-				int index = lower.IndexOf("interested in");
-				string interestPart = input.Substring(index + 13).Trim();
-				string[] words = interestPart.Split(' ', '.', '?');
-				return words[0];
-			}
-			return "cybersecurity";
-		}
-	}
+		
+      private string ExtractInterest(string input)
+        {
+          string lower = input.ToLower();
+         if (lower.Contains("update interest to"))
+               {
+                  int index = lower.IndexOf("update interest to");
+                  string interestPart = input.Substring(index + 19).Trim();
+                  return interestPart.Split(' ', '.', '?')[0];
+            }
+          else if (lower.Contains("my new interest is"))
+          {
+             int index = lower.IndexOf("my new interest is");
+           string interestPart = input.Substring(index + 18).Trim();
+             return interestPart.Split(' ', '.', '?')[0];
+           }
+             else if (lower.Contains("interested in"))
+          {
+             int index = lower.IndexOf("interested in");
+               string interestPart = input.Substring(index + 13).Trim();
+             return interestPart.Split(' ', '.', '?')[0];
+           }
+               return "cybersecurity";
+        }
+	
 
 	public static class StringExtensions
 	{
