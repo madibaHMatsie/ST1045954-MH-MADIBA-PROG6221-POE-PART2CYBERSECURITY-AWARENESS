@@ -1,4 +1,4 @@
-name: Cyber Bot CI - WPF Build
+name: Cyber Bot - WPF Build
 
 on:
   push:
